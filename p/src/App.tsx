@@ -4,9 +4,11 @@ import ProductCard from "./component/ProductCard";
 import { formInputsList, productList } from "./data";
 import Model from "./Model";
 
-import Input from "./component/Ui/Input";
+import Input from './component/Ui/Input';
 import Button from "./component/Ui/Button";
 import type { IProduct } from "./interfaces/index";
+import { productValidation } from "./Valitation";
+import ErrorMassage from "./component/ErrorMassage";
 
 function App() {
   const defaultProductObject = {
@@ -22,6 +24,15 @@ function App() {
   };
   // state
   const [Product, setProduct] = useState<IProduct>(defaultProductObject);
+
+  const [error, serError] = useState({
+    title: "",
+    description: "",
+    imageURL: "",
+    price: "",
+  });
+
+
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -49,11 +60,38 @@ function App() {
       ...Product,
       [name]: value,
     });
+
+    serError({
+      ...error,
+      [name]:""
+    })
+
+
+
+
   };
 
   const onsubmithander = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(Product);
+    const { title, description, imageURL, price } = Product;
+
+    const errors = productValidation({
+      title,
+      description,
+      imageURL,
+      price,
+    });
+    console.log(errors);
+    const hasErrormsag =
+      Object.values(errors).some((value) => value === "") &&
+      Object.values(errors).every((value) => value === "");
+    console.log(hasErrormsag);
+    if (!hasErrormsag) {
+      serError(errors);
+      return;
+    }
+    console.log("send this product ");
   };
 
   // rerender
@@ -73,6 +111,7 @@ function App() {
           value={Product[input.name]}
           onChange={onchangehandler}
         />
+        <ErrorMassage msg={error[input.name]} />
       </div>
     );
   });
