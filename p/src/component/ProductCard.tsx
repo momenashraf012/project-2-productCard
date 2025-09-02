@@ -8,6 +8,7 @@ interface Iprops {
     price: string;
     description: string;
     imageURL: string;
+
   };
 }
 

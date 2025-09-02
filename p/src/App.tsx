@@ -1,14 +1,15 @@
 import { useState, type FormEvent } from "react";
 import "./App.css";
 import ProductCard from "./component/ProductCard";
-import { formInputsList, productList } from "./data";
+import { colors, formInputsList, productList } from "./data";
 import Model from "./Model";
 
-import Input from './component/Ui/Input';
+import Input from "./component/Ui/Input";
 import Button from "./component/Ui/Button";
 import type { IProduct } from "./interfaces/index";
 import { productValidation } from "./Valitation";
 import ErrorMassage from "./component/ErrorMassage";
+import CircleColor from "./component/CircleColor";
 
 function App() {
   const defaultProductObject = {
@@ -24,15 +25,14 @@ function App() {
   };
   // state
   const [Product, setProduct] = useState<IProduct>(defaultProductObject);
-
   const [error, serError] = useState({
     title: "",
     description: "",
     imageURL: "",
     price: "",
   });
-
-
+  const [tempcolor, setTempcolor] = useState<string[]>([]);
+  console.log(tempcolor);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,12 +63,8 @@ function App() {
 
     serError({
       ...error,
-      [name]:""
-    })
-
-
-
-
+      [name]: "",
+    });
   };
 
   const onsubmithander = (event: FormEvent<HTMLFormElement>) => {
@@ -116,6 +112,29 @@ function App() {
     );
   });
 
+  const renderCirclecolor = colors.map((color) => {
+    return (
+      <CircleColor
+        color={color}
+        key={color}
+        onClick={() => {
+          if(tempcolor.includes(color))
+          {
+            setTempcolor((prev)=>prev.filter(item => item !==color))
+            return;
+          }
+
+          
+
+
+
+
+          setTempcolor((prev) => [...prev, color]);
+        }}
+      />
+    );
+  });
+
   return (
     <main className="container mx-auto">
       <Button
@@ -133,6 +152,24 @@ function App() {
       <Model closeModal={closeModal} isOpen={isOpen} title="Please Add product">
         <form onSubmit={onsubmithander}>
           {renderformInputsList}
+          <div className="flex gap-3 my-2 flex-wrap">
+
+            {tempcolor.map((color)=>{
+              return(
+             <span
+                  key={color}
+                  className=" p-1 m-1 rounded-lg text-white "
+                  style={{ backgroundColor: color }}
+                >
+                  {color}
+                </span>
+             
+              )
+            })}
+          </div>
+
+          <div className="flex gap-3 my-2">{renderCirclecolor}</div>
+
           <div className="flex my-2  gap-3">
             <Button
               className="w-full bg-red-600 p-2 my-3 rounded-md"
