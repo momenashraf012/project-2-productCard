@@ -10,6 +10,7 @@ import type { IProduct } from "./interfaces/index";
 import { productValidation } from "./Valitation";
 import ErrorMassage from "./component/ErrorMassage";
 import CircleColor from "./component/CircleColor";
+import { v4 as uuid } from "uuid";
 
 function App() {
   const defaultProductObject = {
@@ -24,6 +25,8 @@ function App() {
     },
   };
   // state
+  const [products, setproducts] = useState<IProduct[]>(productList);
+  console.log(products);
   const [Product, setProduct] = useState<IProduct>(defaultProductObject);
   const [error, serError] = useState({
     title: "",
@@ -32,7 +35,7 @@ function App() {
     price: "",
   });
   const [tempcolor, setTempcolor] = useState<string[]>([]);
-  console.log(tempcolor);
+  // console.log(tempcolor);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -69,7 +72,7 @@ function App() {
 
   const onsubmithander = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(Product);
+
     const { title, description, imageURL, price } = Product;
 
     const errors = productValidation({
@@ -78,7 +81,7 @@ function App() {
       imageURL,
       price,
     });
-    console.log(errors);
+
     const hasErrormsag =
       Object.values(errors).some((value) => value === "") &&
       Object.values(errors).every((value) => value === "");
@@ -87,11 +90,19 @@ function App() {
       serError(errors);
       return;
     }
+    setproducts((prev) => [
+      ...prev,
+      { ...Product, id: uuid(), colors: tempcolor },
+    ]);
+    setProduct(defaultProductObject);
+    setTempcolor([]);
+    closeModal();
+
     console.log("send this product ");
   };
 
   // rerender
-  const renderptroductList = productList.map((product) => {
+  const renderptroductList = products.map((product) => {
     return (
       <div key={product.id}>
         <ProductCard product={product} />
@@ -118,17 +129,10 @@ function App() {
         color={color}
         key={color}
         onClick={() => {
-          if(tempcolor.includes(color))
-          {
-            setTempcolor((prev)=>prev.filter(item => item !==color))
+          if (tempcolor.includes(color)) {
+            setTempcolor((prev) => prev.filter((item) => item !== color));
             return;
           }
-
-          
-
-
-
-
           setTempcolor((prev) => [...prev, color]);
         }}
       />
@@ -153,18 +157,16 @@ function App() {
         <form onSubmit={onsubmithander}>
           {renderformInputsList}
           <div className="flex gap-3 my-2 flex-wrap">
-
-            {tempcolor.map((color)=>{
-              return(
-             <span
+            {tempcolor.map((color) => {
+              return (
+                <span
                   key={color}
                   className=" p-1 m-1 rounded-lg text-white "
                   style={{ backgroundColor: color }}
                 >
                   {color}
                 </span>
-             
-              )
+              );
             })}
           </div>
 

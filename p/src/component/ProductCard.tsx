@@ -1,19 +1,20 @@
 import Image from "./Image";
 import Button from "./Ui/Button";
 import { Slicer } from "../SlicerDescrption/function";
+import type { IProduct } from "../interfaces";
+import CircleColor from "./CircleColor";
 
 interface Iprops {
-  product: {
-    title: string;
-    price: string;
-    description: string;
-    imageURL: string;
-
-  };
+  product: IProduct;
 }
 
 const ProductCard = ({ product }: Iprops) => {
-  const { title, description, imageURL, price } = product;
+  const { title, description, imageURL, price, colors } = product;
+  //render
+
+  const renderCirclecolor = colors.map((color) => {
+    return <CircleColor color={color} key={color} />;
+  });
   return (
     <>
       <div className="border border-black p-2 rounded-md flex flex-col max-w-sm mx-auto md:max-w-lg  md:mx-0  ">
@@ -23,11 +24,7 @@ const ProductCard = ({ product }: Iprops) => {
         {/* <p>{description}</p> */}
         <p>{Slicer(description)}</p>
 
-        <div className="flex gap-3 my-2">
-          <span className="w-5 h-5 bg-red-600 rounded-full"></span>
-          <span className="w-5 h-5 bg-red-600 rounded-full"></span>
-          <span className="w-5 h-5 bg-red-600 rounded-full"></span>
-        </div>
+        <div className="flex gap-2 my-2">{renderCirclecolor}</div>
 
         <div className="flex items-center justify-between">
           <span>{price}</span>
