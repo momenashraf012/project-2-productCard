@@ -11,6 +11,7 @@ import { productValidation } from "./Valitation";
 import ErrorMassage from "./component/ErrorMassage";
 import CircleColor from "./component/CircleColor";
 import { v4 as uuid } from "uuid";
+import Slected from "./component/Ui/Slected";
 
 function App() {
   const defaultProductObject = {
@@ -169,6 +170,7 @@ function App() {
               );
             })}
           </div>
+          <Slected />
 
           <div className="flex gap-3 my-2">{renderCirclecolor}</div>
 
