@@ -9,7 +9,7 @@ interface Iprops {
 }
 
 const ProductCard = ({ product }: Iprops) => {
-  const { title, description, imageURL, price, colors } = product;
+  const { title, description, imageURL, price, colors,category } = product;
   //render
 
   const renderCirclecolor = colors.map((color) => {
@@ -31,7 +31,7 @@ const ProductCard = ({ product }: Iprops) => {
 
           <Image
             className="w-10 h-10 rounded-full object-cover"
-            src={imageURL}
+            src={category.imageURL}
             alt={product.title}
           />
         </div>

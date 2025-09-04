@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import "./App.css";
 import ProductCard from "./component/ProductCard";
-import { colors, formInputsList, productList } from "./data";
+import { categories, colors, formInputsList, productList } from "./data";
 import Model from "./Model";
 
 import Input from "./component/Ui/Input";
@@ -37,6 +37,7 @@ function App() {
   });
   const [tempcolor, setTempcolor] = useState<string[]>([]);
   // console.log(tempcolor);
+  const [selected, setSelected] = useState(categories[0]);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -93,7 +94,7 @@ function App() {
     }
     setproducts((prev) => [
       ...prev,
-      { ...Product, id: uuid(), colors: tempcolor },
+      { ...Product, id: uuid(), colors: tempcolor,category:selected },
     ]);
     setProduct(defaultProductObject);
     setTempcolor([]);
@@ -170,7 +171,7 @@ function App() {
               );
             })}
           </div>
-          <Slected />
+          <Slected selected={selected} setSelected={setSelected} />
 
           <div className="flex gap-3 my-2">{renderCirclecolor}</div>
 
