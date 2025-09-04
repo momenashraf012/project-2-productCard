@@ -103,6 +103,9 @@ const  Slected = ()=> {
                 </span>
               </div>
 
+
+
+
               <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-[:not([data-selected])]:hidden group-data-[focus]:text-white">
                 <CheckIcon aria-hidden="true" className="size-5" />
               </span>
