@@ -3,7 +3,6 @@ import "./App.css";
 import ProductCard from "./component/ProductCard";
 import { categories, colors, formInputsList, productList } from "./data";
 import Model from "./Model";
-
 import Input from "./component/Ui/Input";
 import Button from "./component/Ui/Button";
 import type { IProduct } from "./interfaces/index";
@@ -35,6 +34,10 @@ function App() {
     imageURL: "",
     price: "",
   });
+  const [producttoEdit, setproducttoEdit] =
+    useState<IProduct>(defaultProductObject);
+    console.log(producttoEdit);
+
   const [tempcolor, setTempcolor] = useState<string[]>([]);
   // console.log(tempcolor);
   const [selected, setSelected] = useState(categories[0]);
@@ -94,7 +97,7 @@ function App() {
     }
     setproducts((prev) => [
       ...prev,
-      { ...Product, id: uuid(), colors: tempcolor,category:selected },
+      { ...Product, id: uuid(), colors: tempcolor, category: selected },
     ]);
     setProduct(defaultProductObject);
     setTempcolor([]);
@@ -107,7 +110,7 @@ function App() {
   const renderptroductList = products.map((product) => {
     return (
       <div key={product.id}>
-        <ProductCard product={product} />
+        <ProductCard product={product} setproducttoEdit={setproducttoEdit} />
       </div>
     );
   });

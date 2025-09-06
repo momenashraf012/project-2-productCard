@@ -6,15 +6,28 @@ import CircleColor from "./CircleColor";
 
 interface Iprops {
   product: IProduct;
+  setproducttoEdit:(product:IProduct)=> void
 }
 
-const ProductCard = ({ product }: Iprops) => {
+const ProductCard = ({ product,setproducttoEdit }: Iprops) => {
   const { title, description, imageURL, price, colors,category } = product;
   //render
 
   const renderCirclecolor = colors.map((color) => {
     return <CircleColor color={color} key={color} />;
   });
+
+  //handler 
+  const onEditproduct=()=>{
+    setproducttoEdit(product);
+   
+
+  }
+
+
+
+
+
   return (
     <>
       <div className="border border-black p-2 rounded-md flex flex-col max-w-sm mx-auto md:max-w-lg  md:mx-0  ">
@@ -38,7 +51,7 @@ const ProductCard = ({ product }: Iprops) => {
         <div className="flex my-2  gap-3">
           <Button
             onClick={() => {
-              console.log("dmdmdmmd");
+         onEditproduct()
             }}
             className="w-full bg-red-600"
           >
