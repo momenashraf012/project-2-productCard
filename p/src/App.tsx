@@ -85,7 +85,59 @@ function App() {
     });
   };
 
+    const  onchangeEdithandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = event.target;
+
+    // console.log(value);
+    // console.log(name);
+    // console.log([name], value);
+    // console.log(Product);
+
+    setproducttoEdit({
+      ...producttoEdit,
+      [name]: value,
+    });
+
+    serError({
+      ...error,
+      [name]: "",
+    });
+  };
+
+
   const onsubmithander = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const { title, description, imageURL, price } = Product;
+
+    const errors = productValidation({
+      title,
+      description,
+      imageURL,
+      price,
+    });
+
+    const hasErrormsag =
+      Object.values(errors).some((value) => value === "") &&
+      Object.values(errors).every((value) => value === "");
+    console.log(hasErrormsag);
+    if (!hasErrormsag) {
+      serError(errors);
+      return;
+    }
+    setproducts((prev) => [
+      ...prev,
+      { ...Product, id: uuid(), colors: tempcolor, category: selected },
+    ]);
+    setProduct(defaultProductObject);
+    setTempcolor([]);
+    closeModal();
+
+    console.log("send this product ");
+  };
+
+
+   const onsubmitEdithander = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const { title, description, imageURL, price } = Product;
@@ -120,7 +172,11 @@ function App() {
   const renderptroductList = products.map((product) => {
     return (
       <div key={product.id}>
-        <ProductCard product={product} setproducttoEdit={setproducttoEdit}  openModalToEdit={openModalToEdit}/>
+        <ProductCard
+          product={product}
+          setproducttoEdit={setproducttoEdit}
+          openModalToEdit={openModalToEdit}
+        />
       </div>
     );
   });
@@ -212,10 +268,25 @@ function App() {
         isOpen={isOpenToEdit}
         title="Edit product"
       >
-        <form onSubmit={onsubmithander}>
-   
-          
-        
+        <form onSubmit={onsubmitEdithander}>
+          <div className="flex flex-col " >
+        <label htmlFor="">{"title"}</label>
+        <Input
+          name={"title"}
+          value={producttoEdit["title"]}
+          onChange={onchangeEdithandler}
+        />
+        <ErrorMassage msg={""} />
+      </div>
+        <div className="flex flex-col " >
+        <label htmlFor="">{"description"}</label>
+        <Input
+          name={"description"}
+          value={producttoEdit["description"]}
+          onChange={onchangeEdithandler}
+        />
+        <ErrorMassage msg={""} />
+      </div>
 
 
           <div className="flex my-2  gap-3">
