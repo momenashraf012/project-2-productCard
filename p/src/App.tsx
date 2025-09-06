@@ -38,6 +38,8 @@ function App() {
   const [producttoEdit, setproducttoEdit] =
     useState<IProduct>(defaultProductObject);
   console.log(producttoEdit);
+  const [productToEditIndex,setProductToEditIndex]=useState < number> (0);
+  console.log(productToEditIndex);
 
   const [tempcolor, setTempcolor] = useState<string[]>([]);
   // console.log(tempcolor);
@@ -156,23 +158,29 @@ function App() {
       serError(errors);
       return;
     }
+    const updatedproducts=[...products];
+    updatedproducts[productToEditIndex]=producttoEdit;
+    setproducts(updatedproducts);
 
  
     setproducttoEdit(defaultProductObject);
     setTempcolor([]);
-    closeModal();
+    closeModalToEdit();
 
     console.log("send this product ");
   };
 
   // rerender
-  const renderptroductList = products.map((product) => {
+  const renderptroductList = products.map((product,index) => {
     return (
       <div key={product.id}>
+        {index}
         <ProductCard
           product={product}
           setproducttoEdit={setproducttoEdit}
           openModalToEdit={openModalToEdit}
+          index={index}
+          setProductToEditIndex={setProductToEditIndex}
         />
       </div>
     );

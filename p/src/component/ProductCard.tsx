@@ -8,10 +8,12 @@ interface Iprops {
   product: IProduct;
   setproducttoEdit:(product:IProduct)=> void
   openModalToEdit:()=>void
+  index:number,
+  setProductToEditIndex:(value:number)=> void
 
 }
 
-const ProductCard = ({ product,setproducttoEdit,openModalToEdit }: Iprops) => {
+const ProductCard = ({ product,setproducttoEdit,openModalToEdit,index,setProductToEditIndex }: Iprops) => {
   const { title, description, imageURL, price, colors,category } = product;
   //render
 
@@ -23,6 +25,8 @@ const ProductCard = ({ product,setproducttoEdit,openModalToEdit }: Iprops) => {
   const onEditproduct=()=>{
     setproducttoEdit(product);
     openModalToEdit();
+    setProductToEditIndex(index)
+  
    
    
 
