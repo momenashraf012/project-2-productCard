@@ -17,11 +17,12 @@ export interface IProduct {
 export interface IFormInput{
 
     id: string,
-    name:"title"|"description" |"imageURL"|"price",
+    name:IproductName,
     label: string,
     type: string,
 
 }
+export type IproductName="title"|"description" |"imageURL"|"price"
 
 export interface ICategory{
   id?:string,

@@ -5,12 +5,13 @@ import { categories, colors, formInputsList, productList } from "./data";
 import Model from "./Model";
 import Input from "./component/Ui/Input";
 import Button from "./component/Ui/Button";
-import type { IProduct } from "./interfaces/index";
+import type { IProduct, IproductName } from "./interfaces/index";
 import { productValidation } from "./Valitation";
 import ErrorMassage from "./component/ErrorMassage";
 import CircleColor from "./component/CircleColor";
 import { v4 as uuid } from "uuid";
 import Slected from "./component/Ui/Slected";
+
 
 function App() {
   const defaultProductObject = {
@@ -85,7 +86,7 @@ function App() {
     });
   };
 
-    const  onchangeEdithandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onchangeEdithandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
 
     // console.log(value);
@@ -103,7 +104,6 @@ function App() {
       [name]: "",
     });
   };
-
 
   const onsubmithander = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -136,11 +136,10 @@ function App() {
     console.log("send this product ");
   };
 
-
-   const onsubmitEdithander = (event: FormEvent<HTMLFormElement>) => {
+  const onsubmitEdithander = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const { title, description, imageURL, price } = Product;
+    const { title, description, imageURL, price } = producttoEdit;
 
     const errors = productValidation({
       title,
@@ -157,11 +156,9 @@ function App() {
       serError(errors);
       return;
     }
-    setproducts((prev) => [
-      ...prev,
-      { ...Product, id: uuid(), colors: tempcolor, category: selected },
-    ]);
-    setProduct(defaultProductObject);
+
+ 
+    setproducttoEdit(defaultProductObject);
     setTempcolor([]);
     closeModal();
 
@@ -209,6 +206,24 @@ function App() {
       />
     );
   });
+  const renderprojectEditwithErrormg = (
+    id: string,
+    Label: string,
+    name: IproductName
+  ) => {
+    return (
+      <div className="flex flex-col ">
+        <label htmlFor={id}>{Label} </label>
+        <Input
+          id={id}
+          name={name}
+          value={producttoEdit[name]}
+          onChange={onchangeEdithandler}
+        />
+        <ErrorMassage msg={error[name]} />
+      </div>
+    );
+  };
 
   return (
     <main className="container mx-auto">
@@ -269,25 +284,18 @@ function App() {
         title="Edit product"
       >
         <form onSubmit={onsubmitEdithander}>
-          <div className="flex flex-col " >
-        <label htmlFor="">{"title"}</label>
-        <Input
-          name={"title"}
-          value={producttoEdit["title"]}
-          onChange={onchangeEdithandler}
-        />
-        <ErrorMassage msg={""} />
-      </div>
-        <div className="flex flex-col " >
-        <label htmlFor="">{"description"}</label>
-        <Input
-          name={"description"}
-          value={producttoEdit["description"]}
-          onChange={onchangeEdithandler}
-        />
-        <ErrorMassage msg={""} />
-      </div>
-
+          {renderprojectEditwithErrormg("title", "title", "title")}
+          {renderprojectEditwithErrormg(
+            "description",
+            "Product Description",
+            "description"
+          )}
+          {renderprojectEditwithErrormg(
+            "imageURL",
+            "Product Image URL",
+            "imageURL"
+          )}
+          {renderprojectEditwithErrormg("price", "Product Price", "price")}
 
           <div className="flex my-2  gap-3">
             <Button
