@@ -159,7 +159,7 @@ function App() {
       return;
     }
     const updatedproducts=[...products];
-    updatedproducts[productToEditIndex]=producttoEdit;
+    updatedproducts[productToEditIndex]={...producttoEdit,colors:tempcolor.concat(producttoEdit.colors)};
     setproducts(updatedproducts);
 
  
@@ -206,6 +206,10 @@ function App() {
         key={color}
         onClick={() => {
           if (tempcolor.includes(color)) {
+            setTempcolor((prev) => prev.filter((item) => item !== color));
+            return;
+          }
+            if (producttoEdit.colors.includes(color)) {
             setTempcolor((prev) => prev.filter((item) => item !== color));
             return;
           }
@@ -304,6 +308,22 @@ function App() {
             "imageURL"
           )}
           {renderprojectEditwithErrormg("price", "Product Price", "price")}
+          
+  <div className="flex gap-3 my-2">{renderCirclecolor}</div>
+            <div className="flex gap-3 my-2 flex-wrap">
+
+            {tempcolor.concat(producttoEdit.colors).map((color) => {
+              return (
+                <span
+                  key={color}
+                  className=" p-1 m-1 rounded-lg text-white "
+                  style={{ backgroundColor: color }}
+                >
+                  {color}
+                </span>
+              );
+            })}
+          </div>
 
           <div className="flex my-2  gap-3">
             <Button
