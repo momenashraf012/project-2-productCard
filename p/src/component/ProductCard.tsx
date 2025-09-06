@@ -7,9 +7,11 @@ import CircleColor from "./CircleColor";
 interface Iprops {
   product: IProduct;
   setproducttoEdit:(product:IProduct)=> void
+  openModalToEdit:()=>void
+
 }
 
-const ProductCard = ({ product,setproducttoEdit }: Iprops) => {
+const ProductCard = ({ product,setproducttoEdit,openModalToEdit }: Iprops) => {
   const { title, description, imageURL, price, colors,category } = product;
   //render
 
@@ -20,6 +22,8 @@ const ProductCard = ({ product,setproducttoEdit }: Iprops) => {
   //handler 
   const onEditproduct=()=>{
     setproducttoEdit(product);
+    openModalToEdit();
+   
    
 
   }

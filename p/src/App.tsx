@@ -36,13 +36,15 @@ function App() {
   });
   const [producttoEdit, setproducttoEdit] =
     useState<IProduct>(defaultProductObject);
-    console.log(producttoEdit);
+  console.log(producttoEdit);
 
   const [tempcolor, setTempcolor] = useState<string[]>([]);
   // console.log(tempcolor);
   const [selected, setSelected] = useState(categories[0]);
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const [isOpenToEdit, setIsOpenToEdit] = useState(false);
 
   // handler
   function closeModal() {
@@ -51,6 +53,14 @@ function App() {
   function openModal() {
     setIsOpen(true);
   }
+
+  function closeModalToEdit() {
+    setIsOpenToEdit(false);
+  }
+  function openModalToEdit() {
+    setIsOpenToEdit(true);
+  }
+
   const oncancel = () => {
     setProduct(defaultProductObject);
     closeModal();
@@ -110,7 +120,7 @@ function App() {
   const renderptroductList = products.map((product) => {
     return (
       <div key={product.id}>
-        <ProductCard product={product} setproducttoEdit={setproducttoEdit} />
+        <ProductCard product={product} setproducttoEdit={setproducttoEdit}  openModalToEdit={openModalToEdit}/>
       </div>
     );
   });
@@ -158,6 +168,7 @@ function App() {
         {renderptroductList}
       </div>
 
+      {/* // Add product  */}
       <Model closeModal={closeModal} isOpen={isOpen} title="Please Add product">
         <form onSubmit={onsubmithander}>
           {renderformInputsList}
@@ -177,6 +188,35 @@ function App() {
           <Slected selected={selected} setSelected={setSelected} />
 
           <div className="flex gap-3 my-2">{renderCirclecolor}</div>
+
+          <div className="flex my-2  gap-3">
+            <Button
+              className="w-full bg-red-600 p-2 my-3 rounded-md"
+              type="submit"
+            >
+              {"ADD "}
+            </Button>
+            <Button
+              className="w-full bg-green-600 p-2 my-3 rounded-md"
+              onClick={oncancel}
+            >
+              {"Cancel "}
+            </Button>
+          </div>
+        </form>
+      </Model>
+
+      {/* // Edit product  */}
+      <Model
+        closeModal={closeModalToEdit}
+        isOpen={isOpenToEdit}
+        title="Edit product"
+      >
+        <form onSubmit={onsubmithander}>
+   
+          
+        
+
 
           <div className="flex my-2  gap-3">
             <Button
